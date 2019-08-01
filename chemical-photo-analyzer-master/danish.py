@@ -3,7 +3,7 @@ import time
 import numpy as np
 import serial.tools.list_ports
 import random
-
+from datetime import datetime
 def writeRGB(x,y,z):
         RGBvalue = x,y,z          
         setRGB = str(RGBvalue)
@@ -61,20 +61,20 @@ if __name__=='__main__':
                 time.sleep(2)
                 sample()
                 time.sleep(1)
-                print("Startup Sequence Completed. Ready!")
+                print("Startup Sequence Completed. Device Ready!")
                 break    
         else:
             raise Exception("Device not found!")
 
     
-
-    sample_name = "methyl_alcohol"
     
-    seeds = [7,random.randrange(2**32-1)]
+    sample_name = "empty"
+    
+    seeds = [7,random.randrange(2**32-1)]#
     for seed in seeds:
         np.random.seed(seed)
         R = np.random.randint(0,255,size=(50,3))#[[0,0,0],[0,0,255],[0,255,0],[0,255,255],[255,0,0],[255,0,255],[255,255,0],[255,255,255]]
         ZR = sample(R)
-        fname = sample_name+"#"+str(seed)+".spv"
+        fname = sample_name+'_'+datetime.now().strftime('%Y-%m-%d-%H-%M-%S')+"#"+str(seed)+".spv"
         np.savetxt(fname,ZR,fmt="%d")
         print(fname+" Saved.")
